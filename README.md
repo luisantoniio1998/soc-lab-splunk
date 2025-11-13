@@ -191,7 +191,6 @@ open http://localhost:8000
 # View results in Splunk
 # Go to Activity → Triggered Alerts
 ```
-SETUP GUIDE
 ---
 
 ## 🎓 Skills Demonstrated
