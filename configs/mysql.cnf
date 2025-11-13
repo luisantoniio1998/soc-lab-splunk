@@ -1,0 +1,13 @@
+[mysqld]
+# General and error logging
+general_log = 1
+general_log_file = /var/log/mysql/general.log
+log_error = /var/log/mysql/error.log
+
+# Slow query logging
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = 2
+
+# Log all queries without indexes
+log_queries_not_using_indexes = 1
