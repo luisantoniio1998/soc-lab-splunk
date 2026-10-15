@@ -1,332 +1,241 @@
-# 🔐 SOC Lab - Production-Grade Security Operations Center
+# SOC Lab Splunk
 
-> A complete Security Operations Center environment built with Splunk SIEM for real-world threat detection, monitoring, and incident response.
+This is a small security lab I built to learn how a SOC works in practice.
 
-![Splunk](https://img.shields.io/badge/Splunk-000000?style=for-the-badge&logo=splunk&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Kali Linux](https://img.shields.io/badge/Kali_Linux-557C94?style=for-the-badge&logo=kali-linux&logoColor=white)
-![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)
+The goal was simple: run a few services, generate logs, simulate attacks, and see everything show up in Splunk dashboards and alerts.
 
----
-
-## 📊 Project Overview
-
-This hands-on cybersecurity project demonstrates enterprise-level security monitoring and threat detection capabilities through a fully functional SOC lab environment.
-
-### 🎯 Key Achievements
-
-- ✅ **Deployed enterprise SIEM** with Splunk on Docker (Mac M2/Apple Silicon)
-- ✅ **Processed 18,000+ security events** with full visibility
-- ✅ **Created 3 professional dashboards** for real-time monitoring
-- ✅ **Built 5 automated detection rules** for common attack patterns
-- ✅ **Detected 300+ attack attempts** across multiple vectors
-- ✅ **Configured 10+ containerized services** in isolated network
-- ✅ **Achieved 100% attack visibility** with automated alerting
+This is not a production environment. It is a learning lab for SIEM, monitoring, and basic threat detection.
 
 ---
 
-## 🖼️ Screenshots
+## What this project does
 
-### Real-Time Attack Feed Dashboard
+This lab includes:
+
+- Splunk running in Docker
+- Nginx as a web server
+- MySQL as a database service
+- Syslog for centralized logging
+- Kali Linux used to simulate attacks
+- Alert rules for suspicious activity
+- Dashboards to visualize traffic and security events
+
+The idea is to make security data visible and understandable.
+
+---
+
+## Why I built it
+
+I wanted to understand how a real SOC actually works.
+
+Not just from reading theory, but by doing it:
+
+- collecting logs
+- sending them to Splunk
+- watching live attack traffic
+- creating alerts
+- checking dashboards for patterns
+
+It became a practical way to learn SIEM and security monitoring.
+
+---
+
+## Screenshots
+
+### Attack feed
 ![Real-Time Attack Feed](screenshots/attack-feed.png)
-*Live monitoring of security events with attack classification and timeline*
 
-### Security Metrics & KPIs
+### Security KPIs
 ![Security KPIs](screenshots/security-kpis.png)
-*Key performance indicators showing threat volume and response status*
 
-### Triggered Security Alerts
+### Triggered alerts
 ![Triggered Alerts](screenshots/triggered-alerts.png)
-*Automated alerts detecting SQL injection, brute force, and multi-vector attacks*
-s
-### SOC Security Overview
+
+### SOC overview
 ![SOC Overview](screenshots/soc-overview.png)
-*Comprehensive dashboard showing attack types, HTTP status, and top attackers*
 
 ---
 
-## 🏗️ Architecture
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     Splunk Enterprise                        │
-│                  (SIEM & Analysis Platform)                  │
-└─────────────────────────────────────────────────────────────┘
-                              ▲
-                              │ Logs & Events
-                              │
-        ┌─────────────────────┼─────────────────────┐
-        │                     │                     │
-┌───────▼──────┐    ┌────────▼─────┐    ┌─────────▼────────┐
-│   Nginx      │    │    MySQL     │    │   Syslog Server  │
-│  Web Server  │    │   Database   │    │   (Centralized)  │
-└──────────────┘    └──────────────┘    └──────────────────┘
-        ▲                   ▲                      ▲
-        │                   │                      │
-        └───────────────────┴──────────────────────┘
-                            │
-                    ┌───────▼────────┐
-                    │  Kali Linux    │
-                    │    Attacker    │
-                    └────────────────┘
+## Architecture
+
+```text
++---------------------------+
+|       Splunk SIEM         |
++---------------------------+
+             |
+             | logs / events
+             v
++-----------+   +-----------+   +----------------+
+|   Nginx   |   |   MySQL   |   | Syslog Server  |
+| Web app   |   | Database  |   | Central logs   |
++-----------+   +-----------+   +----------------+
+             \        |        /
+              \       |       /
+                 +-----+-----+
+                       |
+                       v
+                +-------------+
+                | Kali Linux  |
+                | Attacker    |
+                +-------------+
 ```
 
-### Components
+---
 
-| Component | Purpose | Technology |
-|-----------|---------|------------|
-| **SIEM** | Security monitoring & analysis | Splunk Enterprise |
-| **Log Sources** | Generate security events | Nginx, MySQL, Syslog |
-| **Attack Platform** | Simulate real-world attacks | Kali Linux |
-| **Log Forwarders** | Collect & forward logs | Splunk Universal Forwarder |
-| **Infrastructure** | Container orchestration | Docker Compose |
+## What it detects
+
+This lab includes examples of common attack patterns:
+
+1. SQL injection
+2. Cross-site scripting (XSS)
+3. Brute force attempts
+4. Admin panel probing
+5. Multi-vector attack correlation
+
+These are basic examples, but they are useful for learning how detection rules work in practice.
 
 ---
 
-## 🔍 Detection Capabilities
+## Results
 
-### Automated Security Alerts
+In this setup, I was able to:
 
-1. **SQL Injection Detection** (Critical)
-   - Real-time monitoring for injection patterns
-   - Detects: UNION, SELECT, DROP, INSERT queries in URIs
-   - Status: ✅ Working
+- collect thousands of security events
+- detect multiple attack attempts
+- build dashboards for monitoring activity
+- use Splunk to spot suspicious behavior
 
-2. **Cross-Site Scripting (XSS)** (High)
-   - Identifies script injection attempts
-   - Detects: `<script>`, `javascript:`, `onerror=` patterns
-   - Status: ✅ Working
-
-3. **Brute Force Detection** (High)
-   - Monitors for multiple failed login attempts
-   - Threshold: 20+ requests from single IP in 5 minutes
-   - Status: ✅ Working
-
-4. **Admin Panel Reconnaissance** (Medium)
-   - Detects probing of admin interfaces
-   - Targets: `/admin`, `/wp-admin`, `/phpmyadmin`
-   - Status: ✅ Working
-
-5. **Multi-Vector Attack Correlation** (Critical)
-   - Correlates multiple attack types from same source
-   - Triggers on 2+ different attack patterns
-   - Status: ✅ Working
+It is a hands-on lab, not a production-grade security stack.
 
 ---
 
-## 📈 Results & Metrics
+## Tech stack
 
-### Security Event Analysis (24h)
-- **Total Security Events**: 18,000+
-- **Attack Attempts Detected**: 300+
-- **Blocked Attacks**: 85% (403/404 responses)
-- **Alert Accuracy**: 100% (zero false positives in testing)
-
-### Attack Distribution
-- SQL Injection: 35%
-- Admin Probing: 40%
-- Path Traversal: 15%
-- XSS Attempts: 10%
-
-### Response Metrics
-- **Detection Time**: < 5 seconds (real-time alerts)
-- **Alert Processing**: 5-minute scheduled intervals
-- **Log Processing Rate**: 1000+ events/minute
-
----
-
-## 💻 Tech Stack
-
-**SIEM & Monitoring**
-- Splunk Enterprise 9.x
+- Splunk Enterprise
 - Splunk Universal Forwarder
-- SPL (Search Processing Language)
-
-**Infrastructure**
-- Docker & Docker Compose
-- Mac M2 (Apple Silicon)
-- Isolated Docker Network
-
-**Log Sources**
-- Nginx (Web Server)
-- MySQL (Database)
+- Docker and Docker Compose
+- Nginx
+- MySQL
 - Syslog
-- Custom Log Generators
-
-**Security Testing**
 - Kali Linux
-- Custom attack scripts
-- OWASP Top 10 simulation
+- Shell scripting
 
 ---
 
-## 🚀 Quick Start
+## Quick start
 
-### Prerequisites
-- Docker Desktop (8GB+ RAM)
-- 20GB free disk space
+### Requirements
 
-### Setup (5 minutes)
+- Docker Desktop
+- At least 8GB RAM
+- About 20GB of free disk space
+
+### Start the lab
+
 ```bash
-# Clone the repository
 git clone https://github.com/yourusername/soc-lab-splunk.git
 cd soc-lab-splunk
-
-# Start the lab
 docker-compose up -d
-
-# Wait for Splunk to initialize (2-3 minutes)
-docker logs -f splunk-enterprise
-
-# Access Splunk
-open http://localhost:8000
-# Username: admin
-# Password: ChangeMe123!
 ```
 
-### Run Attack Simulations
+Wait a few minutes for Splunk to start.
+
 ```bash
-# Execute attack scenarios
+docker logs -f splunk-enterprise
+```
+
+Then open:
+
+```text
+http://localhost:8000
+```
+
+Login:
+
+- Username: admin
+- Password: ChangeMe123!
+
+### Run the attack simulation
+
+```bash
 ./lab.sh attacks
-
-# View results in Splunk
-# Go to Activity → Triggered Alerts
 ```
----
 
-## 🎓 Skills Demonstrated
-
-### Technical Skills
-- ✅ SIEM Configuration & Management
-- ✅ Log Aggregation & Forwarding
-- ✅ SPL Query Development
-- ✅ Threat Detection & Correlation
-- ✅ Incident Response Workflows
-- ✅ Docker Containerization
-- ✅ Network Security Monitoring
-- ✅ Attack Pattern Recognition
-
-### SOC Operations
-- ✅ Real-time security monitoring
-- ✅ Alert triage and investigation
-- ✅ Dashboard design and visualization
-- ✅ Threat hunting techniques
-- ✅ Security event analysis
-- ✅ Incident documentation
+Then check the Splunk dashboards and alerts.
 
 ---
 
-## 📂 Project Structure
-```
+## Project structure
+
+```text
 soc-lab/
-├── docker-compose.yml          # Main orchestration file
+├── docker-compose.yml
 ├── configs/
-│   ├── splunk/                 # Splunk configurations
-│   ├── nginx/                  # Web server configs
-│   └── mysql/                  # Database configs
+│   ├── splunk/
+│   ├── nginx/
+│   └── mysql/
 ├── attack-scripts/
-│   ├── web-attacks.sh          # Web attack simulations
-│   ├── network-scan.sh         # Network reconnaissance
-│   └── brute-force.sh          # Login attacks
+│   ├── web-attacks.sh
+│   ├── network-scan.sh
+│   └── brute-force.sh
 ├── dashboards/
-│   ├── soc-overview.xml        # Main SOC dashboard
-│   ├── attack-feed.xml         # Real-time feed
-│   └── security-kpis.xml       # Metrics dashboard
+│   ├── soc-overview.xml
+│   ├── attack-feed.xml
+│   └── security-kpis.xml
 ├── alerts/
-│   └── detection-rules.conf    # Alert configurations
-├── screenshots/                # Dashboard screenshots
-└── docs/
-    ├── README.md               # This file
-    ├── SETUP-GUIDE.md          # Detailed setup
-    └── DETECTION-GUIDE.md      # Detection rules guide
+│   └── detection-rules.conf
+├── screenshots/
+├── docs/
+│   ├── README.md
+│   ├── SETUP-GUIDE.md
+│   └── DETECTION-GUIDE.md
+└── lab.sh
 ```
 
 ---
 
-## 📸 Dashboard Examples
+## Why this matters
 
-### 1. SOC Security Overview
-- Attack types over time (heatmap)
-- HTTP response code distribution
-- Top attack sources (bar chart)
-- Attack count by severity
+This project helped me connect theory with real practice.
 
-### 2. Real-Time Attack Feed
-- Latest attack attempts (table)
-- Attack activity timeline (line chart)
-- Attack classification (multi-series)
+I could see how logs become security signals, how alerts are triggered, and how dashboards help you understand what is happening.
 
-### 3. Security KPIs
-- Total threats (24h metric)
-- Blocked vs allowed (pie chart)
-- Severity distribution (bar chart)
-- Hourly attack volume (column chart)
+That is the part that makes cybersecurity feel real.
 
 ---
 
-## 🎯 Use Cases
+## Important note
 
-This lab is ideal for:
-- 🎓 Learning SIEM operations and threat detection
-- 💼 Building cybersecurity portfolio projects
-- 🔍 Practicing threat hunting and incident response
-- 📊 Understanding security monitoring workflows
-- 🛡️ Preparing for SOC Analyst interviews
+This lab is for learning and testing in a contained environment only.
+
+Do not run it against real systems without permission.
 
 ---
 
-## 🔒 Security & Ethics
+## Contributing
 
-⚠️ **Important Notice**:
-- ✅ For **educational purposes only**
-- ❌ Do **NOT** use against production systems
-- ✅ Contained in **isolated Docker network**
-- ❌ Never run attacks without **explicit authorization**
-- ✅ Follow **responsible disclosure** practices
+If you want to improve it, you can add:
 
----
-
-## 🤝 Contributing
-
-Contributions welcome! Areas for enhancement:
-- Additional attack scenarios
-- New detection rules
-- Dashboard improvements
-- Documentation updates
+- more attack scenarios
+- more detection rules
+- better dashboards
+- cleaner documentation
 
 ---
 
-## 📝 License
+## Contact
 
-This project is for educational purposes. Use responsibly and ethically.
+Luís Barros
 
----
-
-## 📧 Contact
-
-**Luís Barros**  
-🔗 [LinkedIn](https://linkedin.com/in/-luis-barros)  
-📧 luisdbarros98@gmail.com  
+- LinkedIn: https://linkedin.com/in/-luis-barros
+- Email: luisdbarros98@gmail.com
 
 ---
 
-## ⭐ Acknowledgments
+## Final note
 
-- Splunk for the community edition
-- OWASP for security testing guidelines
-- Docker community for containerization support
+This was one of the best ways for me to learn security monitoring.
 
----
+It made the theory feel real instead of just reading about it.
 
-**Built with ❤️ for the cybersecurity community**
-
----
-
-## 📊 Project Stats
-
-![GitHub last commit](https://img.shields.io/github/last-commit/luisantoniio1998/soc-lab-splunk)
-![GitHub repo size](https://img.shields.io/github/repo-size/luisantoniio1998/soc-lab-splunk)
-![GitHub stars](https://img.shields.io/github/stars/luisantoniio1998/soc-lab-splunk)
-
----
-
-*"The best way to learn cybersecurity is by doing. This lab taught me more in 2 weeks than months of theory."*
+If you are trying to learn Splunk, SIEM basics, or SOC workflows, this is a good place to start.
